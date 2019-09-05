@@ -3,6 +3,7 @@ import ScrollTo from 'lzb-scrollto';
 import defaults from '../config/defaults';
 import version from '../config/version';
 
+import getOverflowElementFromParent from './utils/getOverflowElementFromParent';
 import inBrowser from './utils/inBrowser';
 
 class ScrollIntoView {
@@ -13,20 +14,21 @@ class ScrollIntoView {
       ...opt,
     };
     this.sanitizeOptions();
+    this.$parent = getOverflowElementFromParent(this.$el);
     this.init();
 
     this.version = version;
   }
 
   init() {
-    if (!(this.$el instanceof window.Element) && (this.$el !== window)) {
-      throw new Error(`element passed to scrollTo() must be either the window or a DOM element, you passed ${this.$el}!`);
+    if (!(this.$el instanceof window.Element)) {
+      throw new Error(`element passed to scrollTo() must be a DOM element, you passed ${this.$el}!`);
     }
 
     const targetPosition = this.getTargetPosition();
 
     const scrollto = new ScrollTo(
-      window,
+      this.$parent,
       {
         top: targetPosition.top,
         left: targetPosition.left,
@@ -50,36 +52,37 @@ class ScrollIntoView {
 
   getTargetPosition() {
     const clientRect = this.$el.getBoundingClientRect();
+    const parentRect = this.$parent.getBoundingClientRect();
     const position = {
-      top: document.documentElement.scrollTop,
-      left: document.documentElement.scrollLeft,
+      top: this.$parent.scrollTop,
+      left: this.$parent.scrollLeft,
     };
 
-    const mixWidth = window.innerWidth - this.$el.offsetWidth;
-    const mixHeight = window.innerHeight - this.$el.offsetHeight;
+    const mixWidth = this.$parent.clientWidth - this.$el.offsetWidth;
+    const mixHeight = this.$parent.clientHeight - this.$el.offsetHeight;
 
     if (this.options.block === 'start') {
-      position.top += clientRect.top;
+      position.top += clientRect.top - parentRect.top;
     }
 
     if (this.options.inline === 'start') {
-      position.left += clientRect.left;
+      position.left += clientRect.left - parentRect.left;
     }
 
     if (this.options.block === 'center') {
-      position.top += clientRect.top - Math.floor(mixHeight / 2);
+      position.top += clientRect.top - parentRect.top - Math.floor(mixHeight / 2);
     }
 
     if (this.options.inline === 'center') {
-      position.left += clientRect.left - Math.floor(mixWidth / 2);
+      position.left += clientRect.left - parentRect.left - Math.floor(mixWidth / 2);
     }
 
     if (this.options.block === 'end') {
-      position.top += clientRect.top - mixHeight;
+      position.top += clientRect.top - parentRect.top - mixHeight;
     }
 
     if (this.options.inline === 'end') {
-      position.left += clientRect.left - mixWidth;
+      position.left += clientRect.left - parentRect.left - mixWidth;
     }
 
     return position;
