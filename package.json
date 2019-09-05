@@ -1,11 +1,11 @@
 {
   "name": "lzb-scrollintoview",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "a plugin of scrollintoview",
   "main": "dist/scrollintoview.min.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lvzhenbang/scrollintoview.git"
+    "url": "git+https://github.com/lvzhenbang/scroll-into-view.git"
   },
   "author": "lvzhenbang <lvzhenbang@outlook.com>",
   "license": "MIT",
@@ -19,7 +19,7 @@
     "test:coverage": "jest --coverage",
     "deploy": "git checkout -b gh-pages && git pull origin gh-pages && git push origin gh-pages:gh-pages && git checkout master && git branch -D gh-pages"
   },
-  "homepage": "https://lvzhenbang.github.io/scrollintoview/dist/",
+  "homepage": "https://lvzhenbang.github.io/scroll-into-view/dist/",
   "dependencies": {
     "@babel/cli": "^7.5.0",
     "@babel/core": "^7.5.4",
