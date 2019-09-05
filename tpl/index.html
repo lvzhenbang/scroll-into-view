@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>scrollintoview</title>
+  <style>
+    .control {
+      position: fixed;
+      top: 0;
+      left: 0;
+      padding: 20px;
+      text-align: center;
+    }
+    body {
+      width: 100%;
+      padding: 0 1000px;
+    }
+    .intoview {
+      width: 100px;
+      height: 100px;
+      margin: 1000px 0;
+      background-color: tomato
+    }
+  </style>
+</head>
+
+<body>
+  <div class="control">
+    <button class="btn top-left">top left</button>
+    <button class="btn top-right">top right</button>
+    <button class="btn bottom-left">bottom left</button>
+    <button class="btn bottom-right">bottom right</button>
+    <button class="btn center-center">center center</button>
+
+  </div>
+  <div class="intoview"></div>
+
+</body>
+<script>
+  var topLeft = document.querySelector('.btn.top-left');
+  var topRight = document.querySelector('.btn.top-right');
+  var bottomLeft = document.querySelector('.btn.bottom-left');
+  var bottomRight = document.querySelector('.btn.bottom-right');
+  var centerCenter = document.querySelector('.btn.center-center');
+
+  topLeft.addEventListener('click', function() {
+    console.log(1)
+    new ScrollIntoView(
+      document.querySelector('.intoview'),
+      {
+        block: 'start',
+        inline: 'start',
+        behavior: 'smooth'
+      }
+    )
+  });
+  topRight.addEventListener('click', function() {
+    new ScrollIntoView(
+      document.querySelector('.intoview'),
+      {
+        block: 'start',
+        inline: 'end',
+        behavior: 'smooth'
+      }
+    )
+  });
+  bottomLeft.addEventListener('click', function() {
+    new ScrollIntoView(
+      document.querySelector('.intoview'),
+      {
+        block: 'end',
+        inline: 'start',
+        behavior: 'smooth'
+      }
+    )
+  });
+  bottomRight.addEventListener('click', function() {
+    new ScrollIntoView(
+      document.querySelector('.intoview'),
+      {
+        block: 'end',
+        inline: 'end',
+        behavior: 'smooth'
+      }
+    )
+  });
+  centerCenter.addEventListener('click', function() {
+    new ScrollIntoView(
+      document.querySelector('.intoview'),
+      {
+        block: 'center',
+        inline: 'center',
+        behavior: 'smooth'
+      }
+    )
+  });
+</script>
+</html>
