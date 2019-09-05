@@ -16,12 +16,12 @@
     }
     body {
       width: 100%;
-      padding: 0 1000px;
+      padding: 1000px;
     }
     .intoview {
       width: 100px;
       height: 100px;
-      margin: 1000px 0;
+      margin: 100px;
       background-color: tomato
     }
 
@@ -35,7 +35,6 @@
     .box-el {
       width: 100px;
       height: 100px;
-      margin: 500px;
       background-color: blueviolet;
     }
   </style>
@@ -46,14 +45,15 @@
     <button class="btn top-left">top left</button>
     <button class="btn top-right">top right</button>
     <button class="btn bottom-left">bottom left</button>
-    <button class="btn bottom-right">bottom right</button>
+    <button class="btn bottom-right">bottom right</button>    
     <button class="btn center-center">center center</button>
+    <button class="btn nested">nested</button>
 
   </div>
   <div class="intoview"></div>
 
   <div class="box">
-    <div>
+    <div style="padding: 500px;">
       <div class="box-el"></div>
     </div>
   </div>
@@ -65,9 +65,9 @@
   var bottomLeft = document.querySelector('.btn.bottom-left');
   var bottomRight = document.querySelector('.btn.bottom-right');
   var centerCenter = document.querySelector('.btn.center-center');
+  var nested = document.querySelector('.btn.nested');
 
   topLeft.addEventListener('click', function() {
-    console.log(1)
     new ScrollIntoView(
       document.querySelector('.intoview'),
       {
@@ -110,6 +110,16 @@
   centerCenter.addEventListener('click', function() {
     new ScrollIntoView(
       document.querySelector('.intoview'),
+      {
+        block: 'center',
+        inline: 'center',
+        behavior: 'smooth'
+      }
+    )
+  });
+  nested.addEventListener('click', function() {
+    new ScrollIntoView(
+      document.querySelector('.box-el'),
       {
         block: 'center',
         inline: 'center',

@@ -14,7 +14,7 @@ class ScrollIntoView {
       ...opt,
     };
     this.sanitizeOptions();
-    this.$parent = getOverflowElementFromParent(this.$el);
+    this.arrEl = getOverflowElementFromParent(this.$el);
     this.init();
 
     this.version = version;
@@ -25,17 +25,18 @@ class ScrollIntoView {
       throw new Error(`element passed to scrollTo() must be a DOM element, you passed ${this.$el}!`);
     }
 
-    const targetPosition = this.getTargetPosition();
-
-    const scrollto = new ScrollTo(
-      this.$parent,
-      {
-        top: targetPosition.top,
-        left: targetPosition.left,
-        behavior: this.options.behavior,
-      },
-    );
-    return scrollto;
+    this.arrEl.forEach(({ parent, child }) => {
+      const targetPosition = this.getTargetPosition(parent, child);
+      const scrollto = new ScrollTo(
+        parent,
+        {
+          top: targetPosition.top,
+          left: targetPosition.left,
+          behavior: this.options.behavior,
+        },
+      );
+      return scrollto;
+    });
   }
 
   sanitizeOptions() {
@@ -50,16 +51,25 @@ class ScrollIntoView {
     }
   }
 
-  getTargetPosition() {
-    const clientRect = this.$el.getBoundingClientRect();
-    const parentRect = this.$parent.getBoundingClientRect();
+  getTargetPosition(parent, child) {
+    const clientRect = child.getBoundingClientRect();
+    let parentRect = {};
+
+    if (parent === document.documentElement) {
+      parentRect.top = 0;
+      parentRect.left = 0;
+      parentRect.width = window.innerWidth;
+      parentRect.height = window.innerHeight;
+    } else {
+      parentRect = parent.getBoundingClientRect();
+    }
     const position = {
-      top: this.$parent.scrollTop,
-      left: this.$parent.scrollLeft,
+      top: parent.scrollTop,
+      left: parent.scrollLeft,
     };
 
-    const mixWidth = this.$parent.clientWidth - this.$el.offsetWidth;
-    const mixHeight = this.$parent.clientHeight - this.$el.offsetHeight;
+    const mixWidth = parent.clientWidth - child.offsetWidth;
+    const mixHeight = parent.clientHeight - child.offsetHeight;
 
     if (this.options.block === 'start') {
       position.top += clientRect.top - parentRect.top;

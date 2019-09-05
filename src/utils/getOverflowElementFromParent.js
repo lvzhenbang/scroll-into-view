@@ -8,18 +8,31 @@ function hasScrollbar(el) {
   );
 }
 
-export default function getOverflowElementFromParent(el) {
-  if (el === document.body) {
-    return document.documentElement;
-  }
+export default function getOverflowElementFromParent(element) {
+  const overflowArr = [];
+  let childEl = element;
 
-  const parentEl = el.parentNode;
-  if (parentEl === document.body) {
-    return document.documentElement;
-  }
+  const getOverflowObj = (el) => {
+    const parentEl = el.parentNode;
 
-  if (hasScrollbar(parentEl)) {
-    return parentEl;
-  }
-  return getOverflowElementFromParent(parentEl);
+    if (childEl === document.body || parentEl === document.body) {
+      overflowArr.unshift({
+        parent: document.documentElement,
+        child: childEl,
+      });
+      return overflowArr;
+    }
+
+    if (hasScrollbar(parentEl)) {
+      overflowArr.unshift({
+        parent: parentEl,
+        child: childEl,
+      });
+      childEl = parentEl;
+    }
+
+    return getOverflowObj(parentEl);
+  };
+
+  return getOverflowObj(element);
 }
