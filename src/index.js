@@ -14,7 +14,7 @@ class ScrollIntoView {
       ...opt,
     };
     this.sanitizeOptions();
-    this.arrEl = getOverflowElementFromParent(this.$el);
+    this.arrEl = getOverflowElementFromParent(this.$el, this.options.fixed);
     this.init();
 
     this.version = version;

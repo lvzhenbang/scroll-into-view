@@ -8,7 +8,7 @@ function hasScrollbar(el) {
   );
 }
 
-export default function getOverflowElementFromParent(element) {
+export default function getOverflowElementFromParent(element, fixed) {
   const overflowArr = [];
   let childEl = element;
 
@@ -28,6 +28,7 @@ export default function getOverflowElementFromParent(element) {
         parent: parentEl,
         child: childEl,
       });
+      if (fixed) return overflowArr;
       childEl = parentEl;
     }
 

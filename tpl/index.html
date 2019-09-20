@@ -47,7 +47,8 @@
     <button class="btn bottom-left">bottom left</button>
     <button class="btn bottom-right">bottom right</button>    
     <button class="btn center-center">center center</button>
-    <button class="btn nested">nested</button>
+    <button class="btn nested">nested unfixed</button>
+    <button class="btn nested-fixed">nested fixed</button>
 
   </div>
   <div class="intoview"></div>
@@ -66,6 +67,7 @@
   var bottomRight = document.querySelector('.btn.bottom-right');
   var centerCenter = document.querySelector('.btn.center-center');
   var nested = document.querySelector('.btn.nested');
+  var nestFixed = document.querySelector('.btn.nested-fixed');
 
   topLeft.addEventListener('click', function() {
     new ScrollIntoView(
@@ -123,7 +125,18 @@
       {
         block: 'center',
         inline: 'center',
-        behavior: 'smooth'
+        behavior: 'smooth',
+      }
+    )
+  });
+  nestFixed.addEventListener('click', function() {
+    new ScrollIntoView(
+      document.querySelector('.box-el'),
+      {
+        block: 'center',
+        inline: 'center',
+        behavior: 'smooth',
+        fixed: true,
       }
     )
   });
